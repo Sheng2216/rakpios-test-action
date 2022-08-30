@@ -67,7 +67,7 @@ jobs:
         with:
          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
          asset_path: ${{ steps.find-zip-path.outputs.asset_path }}
-         asset_name: site-v${{ github.event.inputs.name }}.zip
+         asset_name: rakpios-armhf-${{ github.event.inputs.name }}.zip
          asset_content_type: application/zip
          
         
