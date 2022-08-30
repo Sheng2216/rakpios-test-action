@@ -46,7 +46,7 @@ jobs:
 #        run: sudo ./build.sh -c default_config
         
       - name: Create Github release
-        id: create-new-releae
+        id: create-new-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_GITHUB }}
