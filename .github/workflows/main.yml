@@ -55,9 +55,10 @@ jobs:
           release_name: Release ${{ github.event.inputs.name }}
           
       - name: Find Zip Path
-        id: pack
+        id: find-zip-path
         run: |
-          asset_path=$(find -name *-lite.zip)
+          ASSET_PATH=$(find -name *-lite.zip)
+          echo "::set-output name=asset_path::${ASSET_PATH}"
           
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
@@ -65,7 +66,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_GITHUB }}
         with:
          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
-         asset_path: ${{ steps.pack.outputs.asset_path }}
+         asset_path: ${{ steps.find-zip-path.outputs.asset_path }}
          asset_name: site-v${{ github.event.inputs.name }}.zip
          asset_content_type: application/zip
          
