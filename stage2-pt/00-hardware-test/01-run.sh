@@ -33,7 +33,7 @@ EOF
 
 #Copy production-testing script
 cp -r files/hardware-test "${ROOTFS_DIR}/home/rak"
-chown -R ${FIRST_USER_NAME}:${FIRST_USER_NAME} "${ROOTFS_DIR}/home/rak/hardware-test"
+#chown -R ${FIRST_USER_NAME}:${FIRST_USER_NAME} "${ROOTFS_DIR}/home/rak/hardware-test"
 #Update config.txt
 cp files/config.txt "${ROOTFS_DIR}/boot/"
 
