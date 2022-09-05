@@ -1,0 +1,30 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          pgdrv_once
+# Required-Start:
+# Required-Stop:
+# Default-Start: 3
+# Default-Stop:
+# Short-Description: Set 2.5G Ethernet Port Status LED
+# Description:
+### END INIT INFO
+. /lib/lsb/init-functions
+case "$1" in
+  start)
+    log_daemon_msg "Set 2.5G Ethernet Port Status LED"
+    cd /usr/local/linuxpg
+    rmmod r8169
+    insmod pgdrv.ko
+    ./rtnicpg-aarch64-linux-gnu /w /efuse
+    rmmod pgdrv
+    modprobe r8169
+    #update-rc.d pgdrv_once remove &&
+    #rm /etc/init.d/pgdrv_once &&
+    log_end_msg $?
+    ;;
+  *)
+    echo "Usage: $0 start" >&2
+    exit 3
+    ;;
+esac
+

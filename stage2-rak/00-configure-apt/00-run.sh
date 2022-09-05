@@ -9,5 +9,4 @@ on_chroot << EOF
 apt update
 apt dist-upgrade -y
 apt install -y apt-transport-https ca-certificates lsb-release 
-export CRYPTOGRAPHY_DONT_BUILD_RUST=1
 EOF

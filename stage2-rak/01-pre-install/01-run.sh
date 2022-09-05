@@ -3,7 +3,7 @@
 on_chroot << EOF
 
 # Generic python modules
-pip3 install adafruit-blinka==7.1.1
+pip3 install adafruit-blinka==8.2.0
 pip3 install adafruit-circuitpython-atecc==1.2.9
 pip3 install numpy==1.22.3
 
