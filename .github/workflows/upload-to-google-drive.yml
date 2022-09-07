@@ -1,0 +1,100 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'version to build'
+        # Default value if no value is explicitly provided
+        default: '1.6.0'
+        # Input has to be provided for the workflow to run
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+        # Steps represent a sequence of tasks that will be executed as part of the job steps:
+        # Runs a single command using the runners shell
+      - name: Send build version number 
+        run: echo "Build ${{ github.event.inputs.name }}"
+        
+      - name: Install required dependencies
+        run: sudo apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
+      
+      - name: Build the binary
+        run: sudo ./build-docker.sh -c default_config
+#        run: sudo ./build.sh -c default_config
+        
+#       - name: Create Github release
+#         id: create-new-release
+#         uses: actions/create-release@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_GITHUB }}
+#         with:
+#           tag_name: ${{ github.event.inputs.name }}
+#           release_name: Release ${{ github.event.inputs.name }}
+          
+      - name: Find Zip Path
+        id: find-zip-path
+        run: |
+          ASSET_PATH=$(find -name *-lite.zip)
+          echo "::set-output name=asset_path::${ASSET_PATH}"
+          
+#       - name: Upload release asset
+#         uses: actions/upload-release-asset@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_GITHUB }}
+#         with:
+#          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+#          asset_path: ${{ steps.find-zip-path.outputs.asset_path }}
+#          asset_name: rakpios-${{ github.event.inputs.name }}.zip
+#          asset_content_type: application/zip
+
+#       - name: Archive files
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install zip
+#           zip -r archive.zip *
+
+      - name: Upload to gdrive
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.credentials }}
+          filename: ${{ steps.find-zip-path.outputs.asset_path }}
+          folderId: ${{ secrets.folderId }}
+#           name: "documentation.zip" # optional string
+          overwrite: "true" # optional boolean
+#       - name: Make Directory Structure
+#         run: |
+#           mkdir -p w/x/y
+#           date +%s > w/x/y/z
+#       - name: Mirror Directory Structure
+#         uses: adityak74/google-drive-upload-git-action@main
+#         with:
+#           credentials: ${{ secrets.DRIVE_CREDENTIALS }}
+#           filename: w/x/y/z
+#           folderId: ${{ secrets.folderId }}
+#           overwrite: "true"
+#           mirrorDirectoryStructure: "true"
+          
+        
