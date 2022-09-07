@@ -82,7 +82,7 @@ dtparam=i2c_arm=on
 dtparam=spi=on
 
 # Enable onboard RTC (this is specific to the RAK7391)
-dtoverlay=i2c-rtc,pcf85063a
+#dtoverlay=i2c-rtc,pcf85063a
 
 # Enable onboard GPIO Expander TPT29555(compatible with PCA9555,this is specific to the RAK7391)
 dtoverlay=pca953x,addr=0x26,pca9555
