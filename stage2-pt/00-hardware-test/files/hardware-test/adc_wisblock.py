@@ -14,10 +14,10 @@ parser.add_option("-a", "--address", type="int", action="store", dest="address",
                   help="Address of the ADS1115 in the bus (defaults to 0x4b)")
 parser.add_option("-b", "--bus", type="int", action="store", dest="bus", default=1,
                   help="I2C channel (0 or 1,defaults to 1)")
-parser.add_option("-c", "--count", type="int", action="store", dest="count", default=5,
-                  help="How many times to query the ADS1115 (any natural number, defaults to 5, 0 means forever until "
-                       "keyboard break)")
-parser.add_option("-d", "--delay", type="int", action="store", dest="delay", default=1000,
+# parser.add_option("-c", "--count", type="int", action="store", dest="count", default=5,
+#                   help="How many times to query the ADS1115 (any natural number, defaults to 5, 0 means forever until "
+#                        "keyboard break)")
+parser.add_option("-d", "--delay", type="int", action="store", dest="delay", default=200,
                   help="How often to query the ADC in ms (100 to 10000, defaults to 1000)")
 parser.add_option("-g", "--gain", type="int", action="store", dest="gain", default=0,
                   help=" Gain (value from 0 to 5, defaults to 0)")
@@ -29,16 +29,16 @@ addr = options.address
 bus = options.bus
 
 adc = Adafruit_ADS1x15.ADS1115(address=addr, busnum=bus)
-if len(args) == 0:
-    print("argument 'port' is mandatory")
-    sys.exit()
+# if len(args) == 0:
+#     print("argument 'port' is mandatory")
+#     sys.exit()
 
-port = int(args[0])
-if port in range(0, 4):
-    pass
-else:
-    print("Error: port must be in the range 0 to 3")
-    sys.exit()
+# port = int(args[0])
+# if port in range(0, 4):
+#     pass
+# else:
+#     print("Error: port must be in the range 0 to 3")
+#     sys.exit()
 
 if options.gain in range(0, 6):
     pass
@@ -62,9 +62,13 @@ Or pick a different gain to change the range of voltages that are read:
 gain_ref_dict = {2 / 3: 6.144, 1: 4.096, 2: 2.048, 4: 1.024, 8: 0.512, 16: 0.256}
 volt_ref = gain_ref_dict.get(GAIN)
 
-for i in range(0, int(options.count)):
-    value = adc.read_adc(port, gain=GAIN)
-    print(value)
-    volt = value * volt_ref / 32767
-    print("Reading: {:.2f}V".format(volt))
-    time.sleep(int(options.delay) / 1000)
+count = 5
+for i in range(1, count + 1):
+    print("ADC Test", i, " result, should all be close to 3.3V")
+    for port in range(0, 4):
+        value = adc.read_adc(port, gain=GAIN)
+        # print(value)
+        volt = value * volt_ref / 32767
+        print("ADC_IN", port, " reading: {:.2f}V".format(volt))
+        time.sleep(int(options.delay) / 1000)
+    print(" ")
