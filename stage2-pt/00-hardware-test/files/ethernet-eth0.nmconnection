@@ -1,0 +1,13 @@
+[connection]
+id=ethernet-eth0
+type=ethernet
+interface-name=eth0
+
+[ipv4]
+address1=192.168.137.77/24,192.168.137.1
+dns=8.8.8.8
+method=manual
+
+[ipv6]
+addr-gen-mode=stable-privacy
+method=auto
