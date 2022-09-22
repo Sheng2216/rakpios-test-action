@@ -40,12 +40,12 @@ cp files/config.txt "${ROOTFS_DIR}/boot/"
 #Set the mofo static IP for testing
 #eth0
 cp files/ethernet-eth0.nmconnection "${ROOTFS_DIR}/etc/NetworkManager/system-connections/"
-chmod -R 600 /etc/NetworkManager/system-connections/ethernet-eth0.nmconnection
-chown -R root:root /etc/NetworkManager/system-connections/ethernet-eth0.nmconnection
+chmod -R 600 "${ROOTFS_DIR}/etc/NetworkManager/system-connections/ethernet-eth0.nmconnection"
+chown -R root:root "${ROOTFS_DIR}/etc/NetworkManager/system-connections/ethernet-eth0.nmconnection"
 #eth1
 cp files/ethernet-eth1.nmconnection "${ROOTFS_DIR}/etc/NetworkManager/system-connections/"
-chmod -R 600 /etc/NetworkManager/system-connections/ethernet-eth1.nmconnection
-chown -R root:root /etc/NetworkManager/system-connections/ethernet-eth1.nmconnection
+chmod -R 600 "${ROOTFS_DIR}/etc/NetworkManager/system-connections/ethernet-eth1.nmconnection"
+chown -R root:root "${ROOTFS_DIR}/etc/NetworkManager/system-connections/ethernet-eth1.nmconnection"
 
 
 
