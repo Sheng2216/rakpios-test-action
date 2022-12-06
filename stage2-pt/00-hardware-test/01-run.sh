@@ -25,11 +25,12 @@ wget https://datasheets.raspberrypi.com/cmio/dt-blob-disp1-cam2.bin -O /boot/dt-
 EOF
 
 # 2.5G Ethernet Port Status LED
-cp files/pgdrv_once "${ROOTFS_DIR}/etc/init.d/"
+#cp files/pgdrv_once "${ROOTFS_DIR}/etc/init.d/"
 cp -r files/linuxpg "${ROOTFS_DIR}/usr/local/"
-on_chroot << EOF
-systemctl enable pgdrv_once
-EOF
+cp files/rtl8125.sh "${ROOTFS_DIR}/home/rak"
+#on_chroot << EOF
+#systemctl enable pgdrv_once
+#EOF
 
 #Copy production-testing script
 cp -r files/hardware-test "${ROOTFS_DIR}/home/rak"
