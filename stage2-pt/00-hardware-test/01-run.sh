@@ -28,6 +28,7 @@ EOF
 #cp files/pgdrv_once "${ROOTFS_DIR}/etc/init.d/"
 cp -r files/linuxpg "${ROOTFS_DIR}/usr/local/"
 cp files/rtl8125.sh "${ROOTFS_DIR}/home/rak"
+chmod +x "${ROOTFS_DIR}/home/rak/rtl8125.sh"
 #on_chroot << EOF
 #systemctl enable pgdrv_once
 #EOF
