@@ -43,7 +43,9 @@ def intro(draw):
     # Write title
     text = "RAKPiOS"
     font = ImageFont.truetype("DejaVuSans-Bold", 20)
-    (font_width, font_height) = font.getsize(text)
+    # (font_width, font_height) = font.getsize(text) #Deprecated
+    left, top, right, bottom = font.getbbox(text)
+    font_width, font_height = right - left, bottom - top
     draw.text((oled.width // 2 - font_width // 2, oled.height // 2 - 20), text, font=font, fill=255)
 
     # Version
@@ -51,7 +53,9 @@ def intro(draw):
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     text = p.stdout.decode()
     font = ImageFont.truetype("DejaVuSans-Bold", 10)
-    (font_width, font_height) = font.getsize(text)
+    # (font_width, font_height) = font.getsize(text) # Deprecated
+    left, top, right, bottom = font.getbbox(text)
+    font_width, font_height = right - left, bottom - top
     draw.text((oled.width // 2 - font_width // 2, oled.height // 2 + 5), text, font=font, fill=255)
 
     return True
@@ -60,7 +64,9 @@ def intro(draw):
 def network(draw):
     # Create blank image for drawing
     font = ImageFont.load_default()
-    (font_width, font_height) = font.getsize("H")
+    # (font_width, font_height) = font.getsize("H")  # Deprecated
+    left, top, right, bottom = font.getbbox("H")
+    font_width, font_height = right - left, bottom - top
     y = 0
 
     draw.rectangle((0, 0, oled.width - 1, font_height - 1), outline=255, fill=255)
@@ -94,7 +100,10 @@ def network(draw):
 def stats(draw):
     # Create blank image for drawing
     font = ImageFont.load_default()
-    (font_width, font_height) = font.getsize("H")
+    # (font_width, font_height) = font.getsize("H")  # Deprecated
+    left, top, right, bottom = font.getbbox("H")
+    font_width, font_height = right - left, bottom - top
+
     y = 0
 
     draw.rectangle((0, 0, oled.width - 1, font_height - 1), outline=255, fill=255)
@@ -142,7 +151,9 @@ def docker(draw):
 
     # Create blank image for drawing
     font = ImageFont.load_default()
-    (font_width, font_height) = font.getsize("H")
+    # (font_width, font_height) = font.getsize("H")  # Deprecated
+    left, top, right, bottom = font.getbbox("H")
+    font_width, font_height = right - left, bottom - top
     y = 0
 
     # Title
@@ -225,6 +236,7 @@ class Graceful_shutdown:
             system_shutdown()
             sys.exit()
 
+
 def system_shutdown():
     timer.cancel()
     power_message("SYSTEM", "SHUTDOWN")
@@ -234,7 +246,7 @@ def system_shutdown():
 
 
 def power_supply_issues(channel):
-    global timer    
+    global timer
     timer.cancel()
     power_message("POWER SUPPLY", "ISSUES !")
     time.sleep(60)
@@ -298,7 +310,6 @@ pages = [intro, network, docker, stats]
 show_page(0)
 timer = RepeatTimer(DELAY, show_page)
 timer.start()
-
 
 # Once detect GPIO 16 is falling, trigger the callback function
 GPIO.setmode(GPIO.BCM)
